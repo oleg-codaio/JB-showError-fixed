@@ -7,4 +7,4 @@ Fortunately it can be addressed using reflection as a dirty workaround, using `E
 
 ![Screenshot](http://i.stack.imgur.com/WSMhR.png)
 
-The screenshot shows that the icon on the bottom `EditText` persists even if the focus changes. In addition it incorporates another fix where if the user presses Delete on an already empty `EditText` the error disappears (another bug?).
+The screenshot shows that the icon on the bottom `EditTextErrorFixed` persists even if the focus changes. In addition it incorporates another fix where if the user presses Delete on an already empty `EditText` the error disappears (another bug?).
