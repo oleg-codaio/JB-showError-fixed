@@ -13,6 +13,12 @@ import android.widget.EditText;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * EditText which addresses issues with the error icon
+ * (http://stackoverflow.com/q/13756978/832776) and also
+ * the error icon disappearing on pressing delete in an empty
+ * EditText
+ */
 public class EditTextErrorFixed extends EditText {
     public EditTextErrorFixed(Context context) {
         super(context);
@@ -53,9 +59,7 @@ public class EditTextErrorFixed extends EditText {
 
         // if the error is not null, and we are in JB, force
         // the error to show
-        if (error != null && /* !isFocused() && */
-                (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN ||
-                android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+        if (error != null && /* !isFocused() && */) {
             showErrorIconHax(icon);
         }
     }
@@ -79,6 +83,11 @@ public class EditTextErrorFixed extends EditText {
         if (icon == null)
             return;
 
+		// only for JB 4.2 and 4.2.1
+		if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN &&
+                android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1)
+			return;
+		
         try {
             Class<?> textview = Class.forName("android.widget.TextView");
             Field tEditor = textview.getDeclaredField("mEditor");
@@ -88,8 +97,7 @@ public class EditTextErrorFixed extends EditText {
             privateShowError.setAccessible(true);
             privateShowError.invoke(tEditor.get(this), icon);
         } catch (Exception e) {
-            // e.printStackTrace();
-            // oh well, we tried
+            // e.printStackTrace(); // oh well, we tried
         }
     }
 }
